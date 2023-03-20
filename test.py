@@ -1,10 +1,8 @@
-# Import the necessary libraries
 import re
 
-# Define the rules of the expert system
 rules = {
     '1': {
-        'question': 'Does the engine make any unusual noises?',
+        'question': '\nDoes the engine make any unusual noises?',
         'options': {
             'a': 'Yes',
             'b': 'No'
@@ -15,7 +13,7 @@ rules = {
         }
     },
     '2': {
-        'question': 'What kind of noise is the engine making?',
+        'question': '\nWhat kind of noise is the engine making?',
         'options': {
             'a': 'Rattling',
             'b': 'Knocking',
@@ -28,40 +26,49 @@ rules = {
         }
     },
     '3': {
-        'answer': 'There may be no issues with the engine.'
+        'answer': '\n\033[1mPossible Problem\033[0m There may be no issues with the engine.\n\n'
     },
     '4': {
-        'answer': 'The engine may have a loose or damaged part.'
+        'answer': '\n\033[1mPossible Problem:\033[0m The engine may have a loose or damaged part.\n\n'
     },
     '5': {
-        'answer': 'The engine may have a bearing problem.'
+        'answer': '\n\033[1mPossible Problem:\033[0m The engine may have a bearing problem.\n\n'
     },
     '6': {
-        'answer': 'The engine may have a problem with the belts or pulleys.'
+        'answer': '\n\033[1mPossible Problem:\033[0m The engine may have a problem with the belts or pulleys.\n\n'
     }
 }
 
-# Define a function to ask questions and get answers
 def ask_question(question, options):
     print(question)
     for option, value in options.items():
         print(option.upper(), value)
-    answer = input('Enter your choice: ')
+    answer = input('\nEnter your choice: ')
     while not re.match('[a-zA-Z]+', answer) or answer.lower() not in options:
-        print('Invalid input. Please try again.')
+        if answer.lower() == 'q':
+            return 'exit'
+        print('Invalid input. Please try again. \n')
         answer = input('Enter your choice: ')
     return answer.lower()
 
-# Define a function to run the expert system
 def run_expert_system(rules):
+    print("\n\033[1mAutomobile Expert System\033[0m")
+    print("--------------------------------")
+    print("\033[1mChoose options by choosing letters a,b,c,etc\033[0m")
     current = '1'
     while True:
+        
+        print("\n\033[1mTo exit the program enter option q\033[0m")
         if 'question' in rules[current]:
             answer = ask_question(rules[current]['question'], rules[current]['options'])
+            if answer == 'exit':
+                break
             current = rules[current]['next'][answer]
         elif 'answer' in rules[current]:
             print(rules[current]['answer'])
-            break
+            answer = ask_question('\nDo you want to run the expert system again?', {'a': 'Yes', 'b': 'No'})
+            if answer == 'b':
+                break
+            current = '1'
 
-# Run the expert system
 run_expert_system(rules)
