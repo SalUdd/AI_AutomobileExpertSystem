@@ -1,6 +1,7 @@
+# Import the regex library for pattern matching
 import re
 
-#this is the rules that should be used by the expert system
+# This dictionary contains the rules for the expert system
 rules = {
   '1': {
        'question': '\nDoes the engine start?',
@@ -111,39 +112,64 @@ rules = {
        'answer': '\n\033[1mPossible Problem: Belts or Pulleys problem: \033[0m The engine may have a problem with the belts or pulleys. Replace belts or pulleys.\n\n'
    }
 }
-#code for
+
+
+# This function is responsible for displaying the question and available options,
+# as well as receiving the user's answer and validating it.
 def ask_question(question, options):
+    # Print the question and options
     print(question)
+    
     for option, value in options.items():
         print(option.upper(), value)
     answer = input('\nEnter your choice: ')
+
+    # Get user input and validate it
     while not re.match('[a-zA-Z]+', answer) or answer.lower() not in options:
         if answer.lower() == 'q':
             return 'exit'
         print('Invalid input. Please try again. \n')
         answer = input('Enter your choice: ')
+    # Return the user's valid answer
     return answer.lower()
 
+# This function runs the expert system using the provided rules
 def run_expert_system(rules):
+    # Print the welcome message
     print("\n\033[1mAutomobile Expert System\033[0m")
     print("--------------------------------")
     print("\033[1mChoose options by choosing letters a,b,c,etc\033[0m")
+
+    # Initialize the current question/answer id
     current = '1'
+
+    # Main loop for running the expert system
     while True:
-        
+        # Print a message to allow the user to exit the program
         print("\n\033[1mTo exit the program enter option q\033[0m")
+
+        # If the current item is a question, display it and get the user's answer
         if 'question' in rules[current]:
             answer = ask_question(rules[current]['question'], rules[current]['options'])
             if answer == 'exit':
                 break
+
+            # Update the current id based on the user's answer
             current = rules[current]['next'][answer]
+
+        # If the current item is an answer, display it and ask the user if they want to run the expert system again
         elif 'answer' in rules[current]:
             print(rules[current]['answer'])
             answer = ask_question('\nDo you want to run the expert system again?', {'a': 'Yes', 'b': 'No'})
+
+            # If the user wants to run the expert system again, reset the current id to '1'
+
             if answer == 'b':
                 break
             current = '1'
 
+            
+# Run the expert system
 run_expert_system(rules)
 
 
