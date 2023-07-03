@@ -92,6 +92,7 @@ rules = {
     9: {'type': 'answer', 'answer': 'Check the battery and charging system.'},
 }
 
+
 # Run the expert system
 run_expert_system(rules)
 
