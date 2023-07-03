@@ -14,7 +14,6 @@ socketserver
 urllib.parse
 re
 
-
 **How it Works**
 
 This expert system uses a simple rule-based approach to diagnose issues. A set of rules is defined in the form of questions and corresponding answers. These rules guide the diagnostic process, similar to how a human expert would ask a series of questions to identify the problem.
